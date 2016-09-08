@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 860 378" style="enable-background:new 0 0 860 378;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st1{fill:#0066FF;}
+	.st2{fill:#FFFFFF;}
+	.st3{font-family:'Raleway';}
+	.st4{font-size:12px;}
+	.st5{fill:#ED2B2B;}
+	.st6{fill:#EE2829;}
+	.st7{fill:#009933;}
+	.st8{fill:#019247;}
+	.st9{font-family:'Raleway-Bold';}
+	.st10{font-size:14px;}
+	.st11{fill:#F2A20C;}
+	.st12{fill:none;}
+	.st13{fill:none;stroke:#2A0000;stroke-miterlimit:10;}
+	.st14{fill:#2A0000;}
+	.st15{fill:none;stroke:#2A0000;stroke-width:1.0001;stroke-miterlimit:10;}
+</style>
+<line class="st0" x1="631.7" y1="144.9" x2="663" y2="106.4"/>
+<line class="st0" x1="633.2" y1="215.1" x2="663" y2="253.3"/>
+<line class="st0" x1="403" y1="179.8" x2="453.2" y2="221"/>
+<line class="st0" x1="405.2" y1="179.8" x2="453.2" y2="144.9"/>
+<rect x="5.8" y="114.8" class="st1" width="24.2" height="141.1"/>
+<text transform="matrix(0 -1 1 0 21.4308 240.2679)" class="st2 st3 st4">Convolution + PRelU</text>
+<rect x="35.4" y="114.8" class="st5" width="24.2" height="141.1"/>
+<text transform="matrix(0 -1 1 0 51.0255 208.0423)" class="st2 st3 st4">Dropout</text>
+<rect x="65" y="114.8" class="st1" width="24.2" height="141.1"/>
+<rect x="94.6" y="114.8" class="st6" width="24.2" height="141.1"/>
+<rect x="124.2" y="114.8" class="st1" width="24.2" height="141.1"/>
+<rect x="153.8" y="114.8" class="st6" width="24.2" height="141.1"/>
+<rect x="183.4" y="114.8" class="st7" width="24.2" height="141.1"/>
+<text transform="matrix(0 -1 1 0 198.8793 223.8763)" class="st2 st3 st4">Max-Pooling</text>
+<rect x="213" y="146.8" class="st1" width="24.5" height="66"/>
+<rect x="243" y="146.8" class="st6" width="24.5" height="66"/>
+<rect x="273" y="146.8" class="st1" width="24.5" height="66"/>
+<rect x="303" y="146.8" class="st6" width="24.5" height="66"/>
+<rect x="333" y="146.8" class="st1" width="24.5" height="66"/>
+<rect x="362.9" y="146.8" class="st6" width="24.5" height="66"/>
+<rect x="392.9" y="146.8" class="st8" width="24.5" height="66"/>
+<text transform="matrix(1 0 0 1 351.4925 259.2767)" class="st9 st10">ENCODER</text>
+<rect x="440.9" y="110.6" class="st8" width="24.5" height="66"/>
+<rect x="440.9" y="183" class="st8" width="24.5" height="66"/>
+<rect x="471" y="110.6" class="st1" width="24.5" height="66"/>
+<rect x="501" y="110.6" class="st6" width="24.5" height="66"/>
+<rect x="531" y="110.6" class="st1" width="24.5" height="66"/>
+<rect x="561" y="110.6" class="st6" width="24.5" height="66"/>
+<rect x="591" y="110.6" class="st1" width="24.5" height="66"/>
+<rect x="620.9" y="110.6" class="st6" width="24.5" height="66"/>
+<rect x="650.9" y="35.8" class="st1" width="24.2" height="141.1"/>
+<rect x="680.5" y="35.8" class="st6" width="24.2" height="141.1"/>
+<rect x="710.1" y="35.8" class="st1" width="24.2" height="141.1"/>
+<rect x="739.7" y="35.8" class="st6" width="24.2" height="141.1"/>
+<rect x="769.3" y="35.8" class="st1" width="24.2" height="141.1"/>
+<rect x="798.9" y="35.8" class="st6" width="24.2" height="141.1"/>
+<rect x="828.5" y="35.8" class="st11" width="24.2" height="141.1"/>
+<text transform="matrix(0 -1 1 0 844.023 144.9017)" class="st3 st4">Convolution</text>
+<rect x="471" y="182.1" class="st1" width="24.5" height="66"/>
+<rect x="501" y="182.1" class="st6" width="24.5" height="66"/>
+<rect x="531" y="182.1" class="st1" width="24.5" height="66"/>
+<rect x="561" y="182.1" class="st6" width="24.5" height="66"/>
+<rect x="591" y="182.1" class="st1" width="24.5" height="66"/>
+<rect x="620.9" y="182.1" class="st6" width="24.5" height="66"/>
+<rect x="650.9" y="182.7" class="st1" width="24.2" height="141.1"/>
+<rect x="680.5" y="182.7" class="st6" width="24.2" height="141.1"/>
+<rect x="710.1" y="182.7" class="st1" width="24.2" height="141.1"/>
+<rect x="739.7" y="182.7" class="st6" width="24.2" height="141.1"/>
+<rect x="769.3" y="182.7" class="st1" width="24.2" height="141.1"/>
+<rect x="798.9" y="182.7" class="st6" width="24.2" height="141.1"/>
+<rect x="828.5" y="182.7" class="st11" width="24.2" height="141.1"/>
+<text transform="matrix(0 -1 1 0 844.023 286.85)" class="st3 st4">Convolution</text>
+<line class="st12" x1="5.8" y1="268.1" x2="417.5" y2="267.1"/>
+<g>
+	<g>
+		<line class="st13" x1="6.3" y1="267.6" x2="417" y2="267.6"/>
+		<g>
+			<rect x="5.8" y="264.3" class="st14" width="1" height="6.5"/>
+		</g>
+		<g>
+			<rect x="416.5" y="264.3" class="st14" width="1" height="6.5"/>
+		</g>
+	</g>
+</g>
+<text transform="matrix(1.0002 0 0 1 787.3 20.1097)" class="st9 st10">DECODER </text>
+<g>
+	<g>
+		<line class="st15" x1="441.4" y1="28.4" x2="852.2" y2="28.4"/>
+		<g>
+			<rect x="440.9" y="25.2" class="st14" width="1" height="6.5"/>
+		</g>
+		<g>
+			<rect x="851.7" y="25.2" class="st14" width="1" height="6.5"/>
+		</g>
+	</g>
+</g>
+<line class="st0" x1="30" y1="179.8" x2="35.4" y2="179.8"/>
+<line class="st0" x1="59.6" y1="179.8" x2="65" y2="179.8"/>
+<line class="st0" x1="89.2" y1="179.8" x2="94.6" y2="179.8"/>
+<line class="st0" x1="118.8" y1="179.8" x2="124.2" y2="179.8"/>
+<line class="st0" x1="148.4" y1="179.8" x2="153.8" y2="179.8"/>
+<line class="st0" x1="178" y1="179.8" x2="183.4" y2="179.8"/>
+<line class="st0" x1="207.6" y1="179.8" x2="213" y2="179.8"/>
+<line class="st0" x1="237.5" y1="181" x2="243" y2="181.2"/>
+<line class="st0" x1="267.5" y1="181.1" x2="273" y2="181.1"/>
+<line class="st0" x1="297.5" y1="181.1" x2="303" y2="181.1"/>
+<line class="st0" x1="327.5" y1="181.1" x2="333" y2="181.1"/>
+<line class="st0" x1="357.5" y1="181.1" x2="362.9" y2="181.1"/>
+<line class="st0" x1="387.4" y1="181.1" x2="392.9" y2="181.1"/>
+<line class="st0" x1="465.4" y1="144.9" x2="471" y2="144.9"/>
+<line class="st0" x1="465.4" y1="215.1" x2="471" y2="215.1"/>
+<line class="st0" x1="495.5" y1="215.1" x2="501" y2="215.1"/>
+<line class="st0" x1="525.5" y1="215.1" x2="531" y2="215.1"/>
+<line class="st0" x1="495.5" y1="144.9" x2="501" y2="144.9"/>
+<line class="st0" x1="525.5" y1="144.9" x2="531" y2="144.9"/>
+<line class="st0" x1="555.5" y1="144.9" x2="561" y2="144.9"/>
+<line class="st0" x1="585.5" y1="144.9" x2="591" y2="144.9"/>
+<line class="st0" x1="615.5" y1="144.9" x2="620.9" y2="144.9"/>
+<line class="st0" x1="555.5" y1="215.1" x2="561" y2="215.1"/>
+<line class="st0" x1="584.8" y1="215.1" x2="591" y2="215.1"/>
+<line class="st0" x1="615.5" y1="215.1" x2="620.9" y2="215.1"/>
+<line class="st0" x1="675.1" y1="254" x2="680.5" y2="254"/>
+<line class="st0" x1="704.7" y1="254" x2="710.1" y2="254"/>
+<line class="st0" x1="734.3" y1="254" x2="739.7" y2="254"/>
+<line class="st0" x1="763.9" y1="254" x2="769.3" y2="254"/>
+<line class="st0" x1="793.5" y1="254" x2="798.9" y2="254"/>
+<line class="st0" x1="823.1" y1="254" x2="828.5" y2="254"/>
+<line class="st0" x1="675.1" y1="106.4" x2="680.5" y2="106.4"/>
+<line class="st0" x1="704.7" y1="106.4" x2="710.1" y2="106.4"/>
+<line class="st0" x1="734.3" y1="106.4" x2="739.7" y2="106.4"/>
+<line class="st0" x1="763.9" y1="106.4" x2="769.3" y2="106.4"/>
+<line class="st0" x1="793.5" y1="106.4" x2="798.9" y2="106.4"/>
+<line class="st0" x1="823.1" y1="106.4" x2="828.5" y2="106.4"/>
+<text transform="matrix(1 0 0 1 678.3136 342.5)" class="st3 st4">Predict </text>
+<text transform="matrix(1 0 0 1 720.7136 342.5)" class="st9 st4">initial momentum </text>
+<text transform="matrix(1 0 0 1 682.2136 356.9)" class="st3 st4">for patch in x/y-direction</text>
+<text transform="matrix(1 0 0 1 689.3136 371.3)" class="st3 st4">(top and bottom, resp.)</text>
+</svg>
