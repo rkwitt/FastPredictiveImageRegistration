@@ -21,7 +21,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/prism.css">
+  <link rel="stylesheet" href="css/prism.css" data-noprefix>
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -39,23 +39,19 @@
     <div class="row">
       <div class="twelve columns" style="margin-top: 10%">
         <h4>Fast Predictive Image Registration</h4>
-        <h6>X. Yang, R. Kwitt and M. Niethammer</h6>
-
-        <b>This page is still under construction!</b>
-
-        <p>This project page contains a tutorial, as
-        well as some examples on how to train and use
-        our deep encoder-decoder architecture for your
-        registration task.</p>
+        <h6><b>X. Yang</b>, R. Kwitt and M. Niethammer</h6>
+        <a class="button" href="#">GitHub</a>
+        <a class="button" href="#">Paper</a>
+        <a class="button" href="#">Presentation</a>
+        <img class="u-max-full-width" src="images/dlmi-embedded.svg">
+        <p>This project page contains instructions to reproduce the results
+        for our initial paper, as well as a tutorial on how to use this approach
+        for your own registration tasks.
+        </p>
       </div>
     </div>
 
 
-    <div class="row">
-      <div class="twelve columns">
-        <img class="u-max-full-width" src="images/dlmi.svg">
-      </div>
-    </div>
 
     <div class="row">
       <div class="twelve columns" style="margin-top: 2rem">
@@ -80,11 +76,14 @@
       </div>
     </div>
 
-
-
     <div class="row">
       <div class="twelve columns" style="margin-top: 2rem">
         <h5>Requirements</h5>
+        <p>
+        Our approach for momenta prediction is implemented in Torch. The actual
+        mapping of the source image to the atlas (using the predicted momenta) 
+        is then realized using PyCA.
+        </p>
         <ul>
           <li><a href="http://torch.ch">Torch</a></li>
           <li><a href="https://bitbucket.org/scicompanat/pyca">PyCA</a></li>
@@ -98,7 +97,7 @@
       <div class="twelve columns" style="margin-top: 2rem">
         <h5>Installation</h5>
         <p>
-        First, clone the GitHub repo as:
+        First, clone the GitHub repository as:
         <pre><code class="language-bash">
 git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git
         </code></pre>
@@ -108,9 +107,41 @@ git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git
 
     <div class="row">
       <div class="twelve columns" style="margin-top: 2rem">
+        <h5>A first simple (2D) example</h5>
+        <img class="u-max-full-width" src="images/montage2D.png">
+        <p>
+        We already provide 2D example data in the repository under the <code>data</code> directory. 
+        This data contains (1) 100 
+        2D slices of brain MR images (see examples above), (2) target momenta for LDDMM registration
+        of the images to the atlas, as well as (3)
+        the corresponding atlas image slice. You can already start training a variational autoencoder 
+        for momentum prediction using:
+        <pre><code class="language-bash">
+th main_nodiff.lua
+        </code></pre>
+        The network definition for this particular model can be found in the file <code>create_model.lua</code>
+        in the function <code>create_model.VAE_deformation_parallel_small_noDropout</code>. Per default, we 
+        train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches. 
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 2rem">
+        <h5>Full example</h5>
+        <p>
+        tbd.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="twelve columns" style="margin-top: 2rem">
         <h5>Data</h5>
         <p>
-        A download link (for 2D and 3D data) will be provided soon.
+        A download link for the 3D data we used in the experiments will be 
+        provided soon.
         </p>
       </div>
     </div>
