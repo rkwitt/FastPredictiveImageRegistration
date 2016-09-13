@@ -39,7 +39,7 @@
     <div class="row">
       <div class="twelve columns" style="margin-top: 10%">
         <h4>Fast Predictive Image Registration</h4>
-        <h6><b>X. Yang</b>, R. Kwitt and M. Niethammer</h6>
+        <h6><b>X. Yang</b>, R. Kwitt and M. Niethammer</h6><br>
         <a class="button" href="#">GitHub</a>
         <a class="button" href="#">Paper</a>
         <a class="button" href="#">Presentation</a>
@@ -81,8 +81,13 @@
         <h5>Requirements</h5>
         <p>
         Our approach for momenta prediction is implemented in Torch. The actual
-        mapping of the source image to the atlas (using the predicted momenta) 
+        mapping of the source image to the atlas (using the predicted momenta)
         is then realized using PyCA.
+        <b>Minimum system requirements:</b>
+        We tested the code on Linux running Ubuntu 16.04 with 24GB of main memory
+        and an NVIDIA Titan X (sponsored by NVIDIA). If the code runs on your
+        system, please let us know your configuration and we are happy to add it
+        to our list of supported configurations.
         </p>
         <ul>
           <li><a href="http://torch.ch">Torch</a></li>
@@ -91,7 +96,8 @@
         </ul>
         For installation instructions for those software packages, please
         see the corresponding documentations.
-        Note: due to compatibility issues between the latest Vector Momentum LDDMM package and PyCA package, we suggest checkout a old version of PyCA using the following command:
+        Note: due to compatibility issues between the latest Vector Momentum LDDMM package and the
+        PyCA package, we suggest to checkout a old version of PyCA using the following command(s):
         <pre><code class="language-bash">
         git clone git@bitbucket.org:scicompanat/pyca.git
         cd ./pyca
@@ -117,18 +123,19 @@ git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git
         <h5>A first simple (2D) example</h5>
         <img class="u-max-full-width" src="images/montage2D.png">
         <p>
-        We already provide 2D example data in the repository under the <code>data</code> directory. 
-        This data contains (1) 100 
-        2D slices of brain MR images (see examples above), (2) target momenta for LDDMM registration
+        We provide 2D example data (MR slices of OASIS) as well as a pretrained model
+        in the repository under the <code>data</code> directory. This data contains (1) 100
+        2D slices of brain MR images (see images above) used for training, (2) 50 slices
+        of 2D images (2) target momenta for LDDMM registration
         of the images to the atlas, as well as (3)
-        the corresponding atlas image slice. You can already start training a variational autoencoder 
+        the corresponding atlas image slice. You can already start training a variational autoencoder
         for momentum prediction using:
         <pre><code class="language-bash">
 th main_nodiff.lua
         </code></pre>
         The network definition for this particular model can be found in the file <code>create_model.lua</code>
-        in the function <code>create_model.VAE_deformation_parallel_small_noDropout</code>. Per default, we 
-        train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches. 
+        in the function <code>create_model.VAE_deformation_parallel_small_noDropout</code>. Per default, we
+        train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches.
         </p>
       </div>
     </div>
@@ -147,7 +154,7 @@ th main_nodiff.lua
       <div class="twelve columns" style="margin-top: 2rem">
         <h5>Data</h5>
         <p>
-        A download link for the 3D data we used in the experiments will be 
+        A download link for the 3D data we used in the experiments will be
         provided soon.
         </p>
       </div>
