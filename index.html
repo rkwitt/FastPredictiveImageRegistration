@@ -39,10 +39,10 @@
     <div class="row">
       <div class="twelve columns" style="margin-top: 10%">
         <h4>Fast Predictive Image Registration</h4>
-        <h6><b>X. Yang</b>, R. Kwitt and M. Niethammer</h6><br>
-        <a class="button" href="#">GitHub</a>
-        <a class="button" href="#">Paper</a>
-        <a class="button" href="#">Presentation</a>
+        <h6><b>Xiao Yang</b>, Roland Kwitt and Marc Niethammer</h6><br>
+        <a class="button" href="https://github.com/rkwitt/FastPredictiveImageRegistration">GitHub</a>
+        <a class="button" href="https://arxiv.org/abs/1607.02504">Paper (arXiv)</a>
+        <a class="button" href="#">Slides (to come)</a>
         <img class="u-max-full-width" src="images/dlmi-embedded.svg">
         <p>This project page contains instructions to reproduce the results
         for our initial paper, as well as a tutorial on how to use this approach
@@ -58,13 +58,14 @@
         <h5>Paper</h5>
         <p>
         <b>Fast Predictive Image Registration</b><br>
-        X. Yang (UNC Chapel Hill), R. Kwitt (Univ. of Salzburg) and M. Niethammer
-         (UNC Chapel Hill)<br>
-        DLMI 2016
+        <i>X. Yang (UNC Chapel Hill, USA)<br>
+        R. Kwitt (University of Salzburg, Austria)<br>
+        M. Niethammer (UNC Chapel Hill, USA)</i><br>
+        MICCAI DLMI workshop (2016)
         </p>
         <p>
         If you use this work, please <b>cite</b> the paper using the following
-        BibTex entry in your paper.
+        BibTex entry:
         <pre><code class="language-bash">
 @inproceedings{@YKM16a,
   author    = {X. Yang and R. Kwitt and M. Niethammer},
@@ -81,29 +82,77 @@
         <h5>Requirements</h5>
         <p>
         Our approach for momenta prediction is implemented in Torch. The actual
-        mapping of the source image to the atlas (using the predicted momenta)
-        is then realized using PyCA.
-        <b>Minimum system requirements:</b>
-        We tested the code on Linux running Ubuntu 16.04 with 24GB of main memory
-        and an NVIDIA Titan X (sponsored by NVIDIA). If the code runs on your
+        mapping/warping of images (using the predicted momenta)
+        is then realized using <a href="https://bitbucket.org/scicompanat/pyca">PyCA</a>
+        and <a href="https://bitbucket.org/scicompanat/vectormomentum">VectorMomentum</a>.
+        Regaring <b>minimum system requirements</b>,
+        we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory
+        and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0).
+        <i>If the code runs on your
         system, please let us know your configuration and we are happy to add it
-        to our list of supported configurations.
+        to our list of supported platforms/configurations.</i>
         </p>
         <ul>
           <li><a href="http://torch.ch">Torch</a></li>
           <li><a href="https://bitbucket.org/scicompanat/pyca">PyCA</a></li>
           <li><a href="https://bitbucket.org/scicompanat/vectormomentum">Vector Momentum LDDMM</a></li>
+          <li>MATLAB</li>
         </ul>
-        For installation instructions for those software packages, please
-        see the corresponding documentations.
-        Note: due to compatibility issues between the latest Vector Momentum LDDMM package and the
-        PyCA package, we suggest to checkout a old version of PyCA using the following command(s):
+
+        <h5>Compilation</h5>
+
+        First, lets assume that all of our code will resides under
+        <code>/code</code>. First, we are going to install
+        PyCA. Due to compatibility issues between the latest Vector
+        Momentum LDDMM package (which we will use) and PyCA,
+        we suggest to checkout a old(er) version of PyCA.
+        Note, that we also need the Insight Toolkit (ITK) to be
+        installed.
+
         <pre><code class="language-bash">
-        git clone git@bitbucket.org:scicompanat/pyca.git
-        cd ./pyca
-        git checkout 9954dd5319efaa0ac5f58977e57acf004ad73ed7
+apt-get install insighttoolkit4-python libinsighttoolkit4-dev # install ITK
+cd /code/
+git clone git@bitbucket.org:scicompanat/pyca.git
+cd ./pyca
+git checkout 9954dd5319efaa0ac5f58977e57acf004ad73ed7
+mkdir Build
+cd Build
+ccmake .. # configure PyCA via cmake curses interface
         </code></pre>
       </div>
+      On our system, we had to bump the <code>CUDA_ARCH_VERSION</code>
+      to 20 for PyCA to compile. This can be done via the ccmake interface
+      in the Advanced Mode. Also, the Python bindings did not
+      compile with SWIG 3.0.3; we downgraded to swig-2.0.12 instead
+      <pre><code class="language-bash">
+sudo apt-get install swig2.0
+# you might have to uninstall swig3.0 if errors persist
+      </code></pre>
+      Then, running
+      <pre><code class="language-bash">
+cd /code/pyca/Build
+make -j4 # -j4 will run 4 parallel jobs
+      </code></pre>
+      should compile PyCA. Finally, we also set the <code>PYTHONPATH</code>
+      as follows (we do recommend to put this into
+      the <code>.bashrc</code> file, assuming that you run bash):
+      <pre><code class="language-bash">
+export PYTHONPATH=${PYTHONPATH}:PATH_TO_PYCA/Build/python_module
+      </code></pre>
+      where you have to (1) replace <code>PATH_TO_PYCA</code> with the
+      name of the directory where you checked out PyCA (we assume that
+      you built PyCA under <code>PATH_TO_PYCA/Build</code>)
+
+      <p>
+      Next, we are going to clone the VectorMomentum LDDMM code and set
+      the <code>PYTHONPATH</code> as before:
+      </p>
+
+      <pre><code class="language-bash">
+cd /code/
+git clone https://bitbucket.org/scicompanat/vectormomentum.git
+export PYTHONPATH=${PYTHONPATH}:/code/vectormomentum/Code/Python
+      </code></pre>
     </div>
 
     <div class="row">
@@ -112,6 +161,7 @@
         <p>
         First, clone the GitHub repository as:
         <pre><code class="language-bash">
+cd /code/
 git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git
         </code></pre>
       </p>
@@ -120,43 +170,73 @@ git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git
 
     <div class="row">
       <div class="twelve columns" style="margin-top: 2rem">
-        <h5>A first simple (2D) example</h5>
+        <h5>Example 1: 2D Atlas-to-Image Registration</h5>
         <img class="u-max-full-width" src="images/montage2D.png">
         <p>
         We provide 2D example data (MR slices of OASIS) as well as a pretrained model
-        in the repository under the <code>data</code> directory. This data contains (1) 100
-        2D slices of brain MR images (see images above) used for training, (2) 50 slices
-        of 2D images (2) target momenta for LDDMM registration
-        of the images to the atlas, as well as (3)
-        the corresponding atlas image slice. You can already start training a variational autoencoder
-        for momentum prediction using:
+        in the repository under the <code>data</code> directory. This directory
+        contains
+        <ol>
+          <li>100 images (transversal slices) for training</li>
+          <li>50 images (transversal slices) for testing</li>
+          <li>1 atlas image</li>
+        </ol>
+        Additionally, the <code>data</code> directory contains computed target
+        momenta for atlas-to-image registration which will be used for training
+        our network. In case you don't want to use the pretrained model for
+        experimenting, you can train your own network for momentum prediction
+        with the provided data as follows:
+
         <pre><code class="language-bash">
+cd /code/FastPredictiveImageRegistration
 th main_nodiff.lua
         </code></pre>
-        The network definition for this particular model can be found in the file <code>create_model.lua</code>
-        in the function <code>create_model.VAE_deformation_parallel_small_noDropout</code>. Per default, we
-        train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches.
+        The network definition for the particular model in this example
+        can be found in the file <code>create_model.lua</code> (in the function
+        <code>VAE_deformation_parallel_small_noDropout</code>).
+        Per default, we train (using rmsprop) for 10 epochs using a batch size
+        of 300 and 15x15 patches.
         </p>
+
+        <h6>Momenta prediction by a trained model</h6>
+        <p>
+        To run the (pre)-trained model for momenta prediction, we simply execute
+        <pre><code class="language-bash">
+cd /code/FastPredictiveImageRegistration
+th test_recon_nodiff.lua
+        </code></pre>
+        If this code fails since you do not have the <code>matio</code>
+        module, install it with
+        <pre><code class="language-bash">
+luarocks install matio
+        </code></pre>
+        Once, <code>test_recon_nodiff.lua</code> completes, you should see
+        a file named <code>2D_output.mat</code> in
+        the <code>/code/FastPredictiveImageRegistration</code> directory.
+      </p>
+
+        <h6>Warping images based on predicted momenta</h6>
+
+        <p>
+        In our code, we implement the warping step as follows: first, we
+        will convert all momenta predictions to </code>.mhd</code> files;
+        second, we prepare the configuration files for VectorMomentum LDDMM
+        and eventually run geodesic shooting using the predicted momenta.
+        Lets first start MATLAB and change to the <code>utils</code>
+        directory:
+        </p>
+        <pre><code class="language-matlab">
+cd /code/FastPredictiveImageRegistration/utils
+        </code></pre>
+        Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and
+        set the corresponding paths.
       </div>
     </div>
 
     <div class="row">
       <div class="twelve columns" style="margin-top: 2rem">
-        <h5>Full example</h5>
-        <p>
-        tbd.
-        </p>
-      </div>
-    </div>
-
-
-    <div class="row">
-      <div class="twelve columns" style="margin-top: 2rem">
-        <h5>Data</h5>
-        <p>
-        A download link for the 3D data we used in the experiments will be
-        provided soon.
-        </p>
+        <h5>Contact</h5>
+        Please contact Xiao Yang for comments, suggestions or bug reports :)
       </div>
     </div>
 
