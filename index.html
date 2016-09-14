@@ -216,8 +216,8 @@ luarocks install matio
       </p>
 
         <h6>Warping images based on predicted momenta</h6>
-
         <p>
+
         In our code, we implement the warping step as follows: first, we
         will convert all momenta predictions to </code>.mhd</code> files;
         second, we prepare the configuration files for VectorMomentum LDDMM
@@ -229,7 +229,30 @@ luarocks install matio
 cd /code/FastPredictiveImageRegistration/utils
         </code></pre>
         Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and
-        set the corresponding paths.
+        set the corresponding paths. Per default, the output directory
+        will be <code>/tmp/</code> and the predicted momenta files will
+        be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since
+        we have N=50 test cases. Next, let us write the YAML configuration
+        files for the VectorMomentum LDDMM code. This is done by editing
+        <code>updateyaml.m</code>. Running <code>updateyaml</code> will
+        then create N=50 configuration files in the output directory.
+        <pre><code class="language-matlab">
+cd /code/FastPredictiveImageRegistration/utils
+cchange_m0_to_mhd_2D
+updateyaml
+        </code></pre>
+        Next, we can run the VectorMomentum LDDMM code (for our first test case
+        in this example) as follows:
+        <pre><code class="language-bash">
+cd /external/vectormomentum/Code/Python/Applications/
+python CAvmGeodesicShooting.py ~/deformation-prediction-code/utils/deep_network_1.yaml
+        </code></pre>
+        This will create the atlas image warped onto the source image in the
+        directory <code>/tmp/case_1</code>. If running the geodesic shooting
+        code produces errors (related to plotting), just comment out
+        <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151
+        of </code>CAvmGeodesicShooting.py</code>.
+
       </div>
     </div>
 
