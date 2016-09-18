@@ -30,12 +30,11 @@ R. Kwitt (University of Salzburg, Austria)<br>
 M. Niethammer (UNC Chapel Hill, USA)<br>
 MICCAI DLMI workshop (2016)    </p>
 
-<pre><code>```bibtex
-@inproceedings{@YKM16a,
+<pre lang="bibtex"><code>@inproceedings{@YKM16a,
     author    = {X. Yang and R. Kwitt and M. Niethammer},
     title     = {Fast Predictive Image Registration},
     booktitle = {DLMI},
-    year      = {2016}}
+    year      = {2016}}        
 </code></pre>
 
 <h3>
@@ -56,23 +55,45 @@ MICCAI DLMI workshop (2016)    </p>
 
 <p>First, lets assume that all of our code will resides under <code>code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest Vector Momentum LDDMM package (which we will use) and PyCA, we suggest to checkout a old(er) version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
 
-<pre><code>```bash
-apt-get install insighttoolkit4-python libinsighttoolkit4-dev # install ITK
-cd /code/
+<div class="highlight highlight-source-shell"><pre>apt-get install insighttoolkit4-python libinsighttoolkit4-dev <span class="pl-c"># install ITK</span>
+<span class="pl-c1">cd</span> /code/
 git clone git@bitbucket.org:scicompanat/pyca.git
-cd ./pyca
+<span class="pl-c1">cd</span> ./pyca
 git checkout 9954dd5319efaa0ac5f58977e57acf004ad73ed7
 mkdir Build
-cd Build
-ccmake .. # configure PyCA via cmake curses interface
-</code></pre>
+<span class="pl-c1">cd</span> Build
+ccmake .. <span class="pl-c"># configure PyCA via cmake curses interface</span></pre></div>
 
 <p>On our system, we had to bump the <code>CUDA_ARCH_VERSION</code> to 20 for PyCA to compile. This can be done via the ccmake interface in the Advanced Mode. Also, the Python bindings did not compile with SWIG 3.0.3; we downgraded to swig-2.0.12 instead</p>
 
-<pre><code>```bash
-sudo apt-get install swig2.0
-# you might have to uninstall swig3.0 if errors persist
-</code></pre>
+<div class="highlight highlight-source-shell"><pre>sudo apt-get install swig2.0
+<span class="pl-c"># you might have to uninstall swig3.0 if errors persist</span></pre></div>
+
+<p>Then, running</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/pyca/Build
+make -j4 <span class="pl-c"># -j4 will run 4 parallel jobs</span></pre></div>
+
+<p>should compile PyCA. Finally, we also set the <code>PYTHONPATH</code> as follows (we do recommend to put this into the .bashrc file, assuming that you run bash):</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:PATH_TO_PYCA/Build/python_module</pre></div>
+
+<p>where you have to (1) replace <code>PATH_TO_PYCA</code> with the name of the directory where you checked out PyCA (we assume that you built PyCA under PATH_TO_PYCA/Build). Next, we are going to clone the VectorMomentum LDDMM code and set the <code>PYTHONPATH</code> as before:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/
+git clone https://bitbucket.org/scicompanat/vectormomentum.git
+<span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:/code/vectormomentum/Code/Python</pre></div>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Just clone the GitHub repository as:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/
+git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></div>
+
+<h3>
+<a id="example-1-2d-atlas-to-image-registration" class="anchor" href="#example-1-2d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EXAMPLE 1: 2D atlas-to-image registration</h3>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/rkwitt/FastPredictiveImageRegistration">Fast Predictive Image Registration</a> is maintained by <a href="https://github.com/rkwitt">rkwitt</a>.</span>
