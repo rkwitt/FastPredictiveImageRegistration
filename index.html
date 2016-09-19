@@ -19,11 +19,11 @@
     </section>
 
     <section class="main-content">
-      <p>This project page contains instructions to reproduce the results for our initial paper, as well as a tutorial on how to use 
-this approach for your own registration tasks.</p>
+      <p>This project page contains instructions to reproduce the results for our <strong>initial paper</strong>, 
+as well as a tutorial on how to use this approach for your own registration tasks.</p>
 
-<h3>
-<a id="paper" class="anchor" href="#paper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Paper</h3>
+<h2>
+<a id="paper" class="anchor" href="#paper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Paper</h2>
 
 <p><strong>Fast Predictive Image Registration</strong><br>
 X. Yang (UNC Chapel Hill, USA)<br>
@@ -38,8 +38,8 @@ MICCAI DLMI workshop (2016)    </p>
     year      = {2016}}        
 </code></pre>
 
-<h3>
-<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h3>
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
 <p>Our approach for momenta prediction is implemented in Torch. The actual mapping/warping of images (using the predicted momenta) is then realized using PyCA and VectorMomentum. Regaring minimum system requirements, we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0). If the code runs on your system, please let us know your configuration and we are happy to add it to our list of supported platforms/configurations.</p>
 
@@ -51,8 +51,8 @@ MICCAI DLMI workshop (2016)    </p>
 </li>
 </ul>
 
-<h3>
-<a id="compilation" class="anchor" href="#compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compilation</h3>
+<h2>
+<a id="compilation" class="anchor" href="#compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compilation</h2>
 
 <p>First, lets assume that all of our code will resides under <code>code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest Vector Momentum LDDMM package (which we will use) and PyCA, we suggest to checkout a old(er) version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
 
@@ -85,16 +85,16 @@ make -j4 <span class="pl-c"># -j4 will run 4 parallel jobs</span></pre></div>
 git clone https://bitbucket.org/scicompanat/vectormomentum.git
 <span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:/code/vectormomentum/Code/Python</pre></div>
 
-<h3>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>Just clone the GitHub repository as:</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/
 git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></div>
 
-<h3>
-<a id="example-1-2d-atlas-to-image-registration" class="anchor" href="#example-1-2d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EXAMPLE 1: 2D atlas-to-image registration</h3>
+<h2>
+<a id="example-1-2d-atlas-to-image-registration" class="anchor" href="#example-1-2d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><strong>EXAMPLE 1</strong>: 2D atlas-to-image registration</h2>
 
 <p><img src="https://rkwitt.github.io/FastPredictiveImageRegistration/images/montage2D.png" alt=""></p>
 
@@ -113,8 +113,8 @@ th main_nodiff.lua</pre></div>
 
 <p>The network definition for the particular model in this example can be found in the file <code>create_model.lua</code> (in the function <code>VAE_deformation_parallel_small_noDropout</code>). Per default, we train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches.</p>
 
-<h4>
-<a id="momenta-prediction-by-a-trained-model" class="anchor" href="#momenta-prediction-by-a-trained-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Momenta prediction by a trained model</h4>
+<h3>
+<a id="momenta-prediction-by-a-trained-model" class="anchor" href="#momenta-prediction-by-a-trained-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Momenta prediction by a trained model</h3>
 
 <p>To run the (pre)-trained model for momenta prediction, we simply execute</p>
 
@@ -127,8 +127,8 @@ th test_recon_nodiff.lua</pre></div>
 
 <p>Once, <code>test_recon_nodiff.lua</code> completes, you should see a file named <code>2D_output.mat</code> in the <code>/code/FastPredictiveImageRegistration</code> directory.</p>
 
-<h4>
-<a id="warping-images-based-on-predicted-momenta" class="anchor" href="#warping-images-based-on-predicted-momenta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h4>
+<h3>
+<a id="warping-images-based-on-predicted-momenta" class="anchor" href="#warping-images-based-on-predicted-momenta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
 
 <p>In our code, we implement the warping step as follows: first, we will convert all momenta predictions to <code>.mhd</code> files; second, we prepare the configuration files for VectorMomentum LDDMM and eventually run geodesic shooting using the predicted momenta. Lets first start MATLAB and change to the utils directory:</p>
 
@@ -147,8 +147,8 @@ python CAvmGeodesicShooting.py <span class="pl-k">~</span>/deformation-predictio
 
 <p>This will create the atlas image warped onto the source image in the directory <code>/tmp/case_1</code>. If running the geodesic shooting code produces errors (related to plotting), just comment out <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151 of <code>CAvmGeodesicShooting.py</code>.</p>
 
-<h3>
-<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h3>
+<h2>
+<a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
 
 <p>Please contact Xiao Yang for comments, suggestions or bug reports :)</p>
 
