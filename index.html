@@ -41,7 +41,7 @@ MICCAI DLMI workshop (2016)    </p>
 <h2>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
-<p>Our approach for momenta prediction is implemented in Torch. The actual mapping/warping of images (using the predicted momenta) is then realized using PyCA and VectorMomentum. Regaring minimum system requirements, we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0). If the code runs on your system, please let us know your configuration and we are happy to add it to our list of supported platforms/configurations.</p>
+<p>Our approach for momenta prediction is implemented in Torch. The actual mapping/warping of images (using the predicted momenta) is then realized using <a href="https://bitbucket.org/scicompanat/pyca">PyCA</a> and <a href="https://bitbucket.org/scicompanat/vectormomentum">VectorMomentum LDDMM</a>, both from the SCI Computational Anatomy repository on Bitbucket. Regarding the minimum system requirements, we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0). If the code runs on your system, please let us know your configuration and we are happy to add it to our list of supported platforms/configurations.</p>
 
 <ul>
 <li><a href="http://torch.ch/">Torch</a></li>
@@ -54,51 +54,53 @@ MICCAI DLMI workshop (2016)    </p>
 <h2>
 <a id="compilation" class="anchor" href="#compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compilation</h2>
 
-<p>First, lets assume that all of our code will resides under <code>code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest Vector Momentum LDDMM package (which we will use) and PyCA, we suggest to checkout a old(er) version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
+<p>Lets assume that all of our code will resides under <code>/code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest VectorMomentum LDDMM package (which we will use later on) and PyCA, we suggest to checkout a slightly older version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
 
-<div class="highlight highlight-source-shell"><pre>apt-get install insighttoolkit4-python libinsighttoolkit4-dev <span class="pl-c"># install ITK</span>
-<span class="pl-c1">cd</span> /code/
+<div class="highlight highlight-source-shell"><pre>apt-get install insighttoolkit4-python libinsighttoolkit4-dev <span class="pl-c"># install ITK v4</span>
+<span class="pl-c1">cd</span> /code
 git clone git@bitbucket.org:scicompanat/pyca.git
-<span class="pl-c1">cd</span> ./pyca
+<span class="pl-c1">cd</span> /code/pyca
 git checkout 9954dd5319efaa0ac5f58977e57acf004ad73ed7
 mkdir Build
 <span class="pl-c1">cd</span> Build
-ccmake .. <span class="pl-c"># configure PyCA via cmake curses interface</span></pre></div>
+ccmake .. <span class="pl-c"># configure PyCA via the cmake ncurses interface</span></pre></div>
 
-<p>On our system, we had to bump the <code>CUDA_ARCH_VERSION</code> to 20 for PyCA to compile. This can be done via the ccmake interface in the Advanced Mode. Also, the Python bindings did not compile with SWIG 3.0.3; we downgraded to swig-2.0.12 instead</p>
+<p>On our system, we had to bump the <code>CUDA_ARCH_VERSION</code> to 20 for PyCA to compile. This can be done via the ccmake interface in the <em>Advanced Mode</em>. Also, the Python bindings did not compile with SWIG 3.0.3 (which was the version installed on our Ubuntu 16.04 system); we downgraded to swig-2.0.12 instead</p>
 
 <div class="highlight highlight-source-shell"><pre>sudo apt-get install swig2.0
-<span class="pl-c"># you might have to uninstall swig3.0 if errors persist</span></pre></div>
+<span class="pl-c"># Note that you might have to uninstall swig3.0 if errors persist</span></pre></div>
 
 <p>Then, running</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/pyca/Build
 make -j4 <span class="pl-c"># -j4 will run 4 parallel jobs</span></pre></div>
 
-<p>should compile PyCA. Finally, we also set the <code>PYTHONPATH</code> as follows (we do recommend to put this into the .bashrc file, assuming that you run bash):</p>
+<p>should compile PyCA. Finally, we set the <code>PYTHONPATH</code> as follows (we do recommend to put the following export statement into the .bashrc file, assuming that you run bash):</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:PATH_TO_PYCA/Build/python_module</pre></div>
 
-<p>where you have to (1) replace <code>PATH_TO_PYCA</code> with the name of the directory where you checked out PyCA (we assume that you built PyCA under PATH_TO_PYCA/Build). Next, we are going to clone the VectorMomentum LDDMM code and set the <code>PYTHONPATH</code> as before:</p>
+<p>where you have to (1) replace <code>PATH_TO_PYCA</code> with the name of the directory where you checked out PyCA (we assume that you built PyCA under PATH_TO_PYCA/Build, in our case <code>/code/pyca/Build/python_module</code>). Next, we are going to clone the VectorMomentum LDDMM code and set the <code>PYTHONPATH</code> accordingly:</p>
 
-<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code
 git clone https://bitbucket.org/scicompanat/vectormomentum.git
 <span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:/code/vectormomentum/Code/Python</pre></div>
 
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Just clone the GitHub repository as:</p>
+<p>To install our code for momenta prediction, just clone our GitHub repository as:</p>
 
-<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code
 git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></div>
+
+<p>In the following example, we will describe (in detail) how to actually run the code.</p>
 
 <h2>
 <a id="example-1-2d-atlas-to-image-registration" class="anchor" href="#example-1-2d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EXAMPLE 1: 2D atlas-to-image registration</h2>
 
 <p><img src="https://rkwitt.github.io/FastPredictiveImageRegistration/images/montage2D.png" alt=""></p>
 
-<p>We provide 2D example data (MR slices of OASIS) as well as a pretrained model in the repository under the <code>data</code> directory. This directory contains</p>
+<p>We provide example 2D data (i.e., 2D MR slices from the OASIS brain database) as well as a pre-trained model in the repository under the <code>data</code> directory. This directory contains</p>
 
 <ul>
 <li>100 images (transversal slices) for training</li>
@@ -106,46 +108,48 @@ git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></d
 <li>1 atlas image</li>
 </ul>
 
-<p>Additionally, the data directory contains computed target momenta for atlas-to-image registration which will be used for training our network. In case you don't want to use the pretrained model for experimenting, you can train your own network for momentum prediction with the provided data as follows:</p>
+<p>Additionally, the data directory contains computed target momenta for atlas-to-image registration which will be used for training our network (these are the momenta that we would get by running LDDMM registration). In case you don't want to use the pre-trained model for experimenting, you can train your own network for momentum prediction with the provided data as follows:</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration
 th main_nodiff.lua</pre></div>
 
-<p>The network definition for the particular model in this example can be found in the file <code>create_model.lua</code> (in the function <code>VAE_deformation_parallel_small_noDropout</code>). Per default, we train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches.</p>
+<p>We will give another example later for the case when no LDDMM registrations (i.e., the momenta) are available for training.
+The network definition for the particular model in this example can be found in the file <code>create_model.lua</code> (in the function <code>VAE_deformation_parallel_small_noDropout</code>). Per default, we train (using rmsprop) for 10 epochs using a batch size of 300 and 15x15 patches.</p>
 
 <h3>
 <a id="momenta-prediction-by-a-trained-model" class="anchor" href="#momenta-prediction-by-a-trained-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Momenta prediction by a trained model</h3>
 
-<p>To run the (pre)-trained model for momenta prediction, we simply execute</p>
+<p>To run the (pre)-trained model for momenta prediction, we execute</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration
 th test_recon_nodiff.lua</pre></div>
 
-<p>If this code fails since you do not have the matio module, install it with</p>
+<p>Note that this code might fail in case you do not have the Torch <code>matio</code> module installed. In that
+case, you can use <code>luarocks</code> to install it with</p>
 
 <div class="highlight highlight-source-shell"><pre>luarocks install matio</pre></div>
 
-<p>Once, <code>test_recon_nodiff.lua</code> completes, you should see a file named <code>2D_output.mat</code> in the <code>/code/FastPredictiveImageRegistration</code> directory.</p>
+<p>Once, <code>test_recon_nodiff.lua</code> completes, you should see a file named <code>2D_output.mat</code> in the <code>/code/FastPredictiveImageRegistration</code> directory. </p>
 
 <h3>
 <a id="warping-images-based-on-predicted-momenta" class="anchor" href="#warping-images-based-on-predicted-momenta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
 
-<p>In our code, we implement the warping step as follows: first, we will convert all momenta predictions to <code>.mhd</code> files; second, we prepare the configuration files for VectorMomentum LDDMM and eventually run geodesic shooting using the predicted momenta. Lets first start MATLAB and change to the utils directory:</p>
+<p>We implement the warping step as follows: first, we will convert all momenta predictions to <code>.mhd</code> files; second, we will prepare the configuration files for VectorMomentum LDDMM and eventually run geodesic shooting using the predicted momenta. Lets first start MATLAB and change to the <code>utils</code> directory:</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils</pre></div>
 
 <p>Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and set the corresponding paths. Per default, the output directory will be <code>/tmp/</code> and the predicted momenta files will be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since we have N=50 test cases. Next, let us write the YAML configuration files for the VectorMomentum LDDMM code. This is done by editing <code>updateyaml.m</code>. Running <code>updateyaml</code> will then create N=50 configuration files in the output directory.</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
-cchange_m0_to_mhd_2D
+change_m0_to_mhd_2D
 updateyaml</pre></div>
 
-<p>Next, we can run the VectorMomentum LDDMM code (for our first test case in this example) as follows:</p>
+<p>We can now run the VectorMomentum LDDMM code (for our first test case of this example) as follows:</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /external/vectormomentum/Code/Python/Applications/
 python CAvmGeodesicShooting.py <span class="pl-k">~</span>/deformation-prediction-code/utils/deep_network_1.yaml</pre></div>
 
-<p>This will create the atlas image warped onto the source image in the directory <code>/tmp/case_1</code>. If running the geodesic shooting code produces errors (related to plotting), just comment out <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151 of <code>CAvmGeodesicShooting.py</code>.</p>
+<p>This will create the atlas image <em>warped</em> onto the source image in the directory <code>/tmp/case_1</code>. In case running the geodesic shooting code produces errors (related to plotting), just comment-out <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151 of <code>CAvmGeodesicShooting.py</code>.</p>
 
 <h2>
 <a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
