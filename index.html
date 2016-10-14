@@ -152,6 +152,39 @@ python CAvmGeodesicShooting.py <span class="pl-k">~</span>/deformation-predictio
 <p>This will create the atlas image <em>warped</em> onto the source image in the directory <code>/tmp/case_1</code>. In case running the geodesic shooting code produces errors (related to plotting), just comment-out <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151 of <code>CAvmGeodesicShooting.py</code>.</p>
 
 <h2>
+<a id="example-2-3d-atlas-to-image-registration" class="anchor" href="#example-2-3d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EXAMPLE 2: 3D atlas-to-image registration</h2>
+
+<p>We provide example training and testing 3D data from the <a href="http://www.oasis-brains.org/">OASIS</a> 
+brain database (including the atlas) - 100 images for training, 50 images for testing. 
+These images have been (affinely) pre-aligned by <strong>Nikhil Singh</strong>. We additionally provide 
+momenta (obtained by PyCA) for all training and testing images to train (and test, resp.) our 
+encoder-decoder network. </p>
+
+<h3>
+<a id="downloading-the-data" class="anchor" href="#downloading-the-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Downloading the data</h3>
+
+<p>The training/testing data can be downloaded <a href="https://drive.google.com/drive/folders/0BxHF82gaPzgSemFFbjdDWVN3bkk?usp=sharing.">here</a>. <strong>Note</strong>: the total data size is about 10GB. We recommend to put the data into the <code>data</code> subdirectory, 
+i.e., <code>/code/FastPredictiveImageRegistration/data</code> in our example so that you do not have to edit the code.</p>
+
+<h3>
+<a id="training" class="anchor" href="#training" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Training</h3>
+
+<p>The code for training the 3D encoder-decoder network can be found in <code>main_nodiff_3D_patchprune.lua</code>, assuming
+that the data has been downloaded to <code>/code/FastPredictiveImageRegistration/data</code>. Executing </p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration/
+python main_nodiff_3D_patchprune.lua</pre></div>
+
+<p>will train the encoder-decoder network (on our system with one NVIDIA Titan X, this takes about two days).</p>
+
+<h2>
+<a id="acknowledgments" class="anchor" href="#acknowledgments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgments</h2>
+
+<p>We like to thank the creators of the OASIS brain database for freely providing the data.
+The provided (preprocessed) OASIS data is subject to the same <strong>Data Usage Agreement</strong> as listed on the
+<a href="http://www.oasis-brains.org/app/template/UsageAgreement.vm">OASIS webpage</a>.</p>
+
+<h2>
 <a id="contact" class="anchor" href="#contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact</h2>
 
 <p>Please contact <strong>Xiao Yang</strong> for comments, suggestions or bug reports :)</p>
