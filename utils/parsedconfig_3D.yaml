@@ -1,0 +1,17 @@
+diffOpParams: [1.5, 1.5, 0.15]
+study:
+    I0: /directory_to_atlas/atlas.mhd
+    scaleMomenta: 1.0
+    m0: /directory_to_m0/m0.mhd
+integration:
+    nTimeSteps: 10
+    NIterForInverse: 5
+    integMethod: RK4
+io:
+    outputPrefix: /directory_to_output_prefix/outputPrefixes/
+    gridEvery: 1
+    plotSlice: None
+    saveFrames: False
+    plotSliceDim: z
+    quiverEvery: 1
+useCUDA: true
