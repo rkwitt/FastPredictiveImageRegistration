@@ -105,7 +105,7 @@ git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></d
 <ul>
 <li>100 images (transversal slices) for training</li>
 <li>50 images (transversal slices) for testing</li>
-<li>1 atlas image</li>
+<li>1 atlas image (in <code>data/images/2D_atlas/atlas.mhd</code>)</li>
 </ul>
 
 <p>Additionally, the data directory contains computed target momenta for atlas-to-image registration which will be used for training our network (these are the momenta that we would get by running LDDMM registration). In case you don't want to use the pre-trained model for experimenting, you can train your own network for momentum prediction with the provided data as follows:</p>
@@ -138,11 +138,11 @@ case, you can use <code>luarocks</code> to install it with</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils</pre></div>
 
-<p>Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and set the corresponding paths. Per default, the output directory will be <code>/tmp/</code> and the predicted momenta files will be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since we have N=50 test cases. Next, let us write the YAML configuration files for the VectorMomentum LDDMM code. This is done by editing <code>updateyaml.m</code>. Running <code>updateyaml</code> will then create N=50 configuration files in the output directory.</p>
+<p>Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and set the corresponding paths. Per default, the output directory will be <code>/tmp/</code> and the predicted momenta files will be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since we have N=50 test cases. Next, let us write the YAML configuration files for the VectorMomentum LDDMM code. This is done by editing <code>updateyaml_2D.m</code>. Running <code>updateyaml_2D</code> will then create N=50 configuration files in the output directory.</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
 change_m0_to_mhd_2D
-updateyaml</pre></div>
+updateyaml_2D</pre></div>
 
 <p>We can now run the VectorMomentum LDDMM code (for our first test case of this example) as follows:</p>
 
@@ -154,17 +154,24 @@ python CAvmGeodesicShooting.py <span class="pl-k">~</span>/deformation-predictio
 <h2>
 <a id="example-2-3d-atlas-to-image-registration" class="anchor" href="#example-2-3d-atlas-to-image-registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>EXAMPLE 2: 3D atlas-to-image registration</h2>
 
-<p>We provide example training and testing 3D data from the <a href="http://www.oasis-brains.org/">OASIS</a> 
-brain database (including the atlas) - 100 images for training, 50 images for testing. 
-These images have been (affinely) pre-aligned by <strong>Nikhil Singh</strong>. We additionally provide 
-momenta (obtained by PyCA) for all training and testing images to train (and test, resp.) our 
-encoder-decoder network. </p>
+<p>We provide example 3D training and testing data from the <a href="http://www.oasis-brains.org/">OASIS</a> 
+brain database (including the atlas), i.e.,</p>
+
+<ul>
+<li>100 images for training</li>
+<li>50 images for testing</li>
+<li>1 atlas image (in <code>data/images/3D_atlas/atlas.mhd</code>)</li>
+</ul>
+
+<p>These images have been (affinely) pre-aligned to the atlas by <strong>Nikhil Singh</strong>. We additionally 
+provide momenta (obtained by PyCA) for all training and testing images. This allows us to 
+train and test our encoder-decoder network. </p>
 
 <h3>
 <a id="downloading-the-data" class="anchor" href="#downloading-the-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Downloading the data</h3>
 
-<p>The training/testing data can be downloaded <a href="https://drive.google.com/drive/folders/0BxHF82gaPzgSemFFbjdDWVN3bkk?usp=sharing.">here</a>. <strong>Note</strong>: the total data size is about 10GB. We recommend to put the data into the <code>data</code> subdirectory, 
-i.e., <code>/code/FastPredictiveImageRegistration/data</code> in our example so that you do not have to edit the code.</p>
+<p>The training/testing data can be downloaded <a href="https://drive.google.com/drive/folders/0BxHF82gaPzgSemFFbjdDWVN3bkk?usp=sharing.">here</a>. <strong>Note</strong>: the total data size is approximately 10GB. We recommend to put the data into the <code>data</code> subdirectory, i.e., <code>/code/FastPredictiveImageRegistration/data</code> in our example, so that you do not have to edit 
+the training/testing code. <em>For now, the paths are hardcoded</em>.</p>
 
 <h3>
 <a id="training" class="anchor" href="#training" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Training</h3>
@@ -173,9 +180,59 @@ i.e., <code>/code/FastPredictiveImageRegistration/data</code> in our example so 
 that the data has been downloaded to <code>/code/FastPredictiveImageRegistration/data</code>. Executing </p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration/
-python main_nodiff_3D_patchprune.lua</pre></div>
+th main_nodiff_3D_patchprune.lua</pre></div>
 
 <p>will train the encoder-decoder network (on our system with one NVIDIA Titan X, this takes about two days).</p>
+
+<h3>
+<a id="momenta-prediction-by-a-trained-model-1" class="anchor" href="#momenta-prediction-by-a-trained-model-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Momenta prediction by a trained model</h3>
+
+<p>Next, we will run the model in prediction mode to <em>map</em> our 50 input images to momenta that can be
+later used by the VectorMomentum LDDMM code. This can simply be done by executing</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration/
+th test_recon_nodiff_3D.lua
+mv 3D_output.mat data/</pre></div>
+
+<p>which will create a MATLAB file <code>3D_output.mat</code> in the directory from which you executed the 
+<code>test_recon_nodiff_3D.lua</code> Torch code, i.e., in our case <code>/code/FastPredictiveImageRegistration/</code>.</p>
+
+<p>Once this step is finished, we need to convert the outputted momenta to MHD files. To do this,
+we edit <code>change_m0_to_mhd_3D.m</code> MATLAB file and adjust the variables within <code>CONFIG::START</code>
+and <code>CONFIG::END</code>. In our example, we set:</p>
+
+<div class="highlight highlight-source-matlab"><pre>momenta_mat_file = <span class="pl-s"><span class="pl-pds">'</span>../data/3D_output.mat<span class="pl-pds">'</span></span>;
+output_dir = <span class="pl-s"><span class="pl-pds">'</span>/tmp/<span class="pl-pds">'</span></span>;
+output_prefix = <span class="pl-s"><span class="pl-pds">'</span>m<span class="pl-pds">'</span></span>;</pre></div>
+
+<p>Then, we run</p>
+
+<div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
+change_m0_to_mhd_3D</pre></div>
+
+<p>which will create 50 output files in the <code>/tmp</code> folder, named <code>m_1.mhd</code>, <code>m_1.raw</code>, ..., <code>m_50.mhd</code>, <code>m_50.raw</code>.
+Before we can run the VectorMomentum LDDMM code on these files, we need to create the required
+configuration files. As in the 2D example, we edit the <code>updateyaml_3D.m</code> MATLAB file and adjust the
+variables within the <code>CONFIG::START</code> and <code>CONFIG::END</code> block. Eventually, running</p>
+
+<div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
+updateyaml_3D</pre></div>
+
+<p>generates a collection of (N=50) <code>.yaml</code> files (in the <code>/tmp/</code> directory per default) that can be used
+to run the VectorMomentum LDDMM code.</p>
+
+<h3>
+<a id="warping-images-based-on-predicted-momenta-1" class="anchor" href="#warping-images-based-on-predicted-momenta-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
+
+<p>As in the 2D example, we run the VectorMomentum LDDMM code as:</p>
+
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /external/vectormomentum/Code/Python/Applications/
+python CAvmGeodesicShooting.py /tmp/deep_network_1.yaml</pre></div>
+
+<h2>
+<a id="steps-for-trainingtesting-our-encoder-decoder-network-on-your-own-data" class="anchor" href="#steps-for-trainingtesting-our-encoder-decoder-network-on-your-own-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Steps for training/testing our encoder-decoder network on your own data</h2>
+
+<p><em>will be available shortly</em></p>
 
 <h2>
 <a id="acknowledgments" class="anchor" href="#acknowledgments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Acknowledgments</h2>
