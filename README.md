@@ -1,6 +1,7 @@
-# FastPredictiveImageRegistration
+# Fast Predictive Image Registration
 
-This repository contains source code for
+This repository contains source code for the
+DLMI 2016 paper 
 **Fast Predictive Image Registration**. If you
 use the code, please cite the following paper:
 
