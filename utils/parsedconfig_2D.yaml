@@ -2,7 +2,7 @@ diffOpParams: [0.05, 0.05, 0.005]
 study:
     I0: /directory_to_repo/data/images/atlas.mhd
     scaleMomenta: 1.0
-    m0: /directory_to_generated_momentums/m.mhd
+    m0: /directory_to_m0/m0.mhd
 integration:
     nTimeSteps: 20
     NIterForInverse: 5

@@ -1,19 +1,71 @@
-fid = fopen('parsedconfig_3D.yaml', 'r');
+% This script is intended to produce configuration files for the
+% VectorMomentum LDDMM code which will be used to warp images based on the
+% computed momenta.
 
+
+%--------------------------------------------------------------------------
+% CONFIG::START (change if required)
+%--------------------------------------------------------------------------
+
+% set the output directory for the .yaml files
+output_conf_dir = '/tmp/';              
+
+% set the path prefix for the folders which will hold the results of
+% running the VectorMomentum LDDMM code
+output_case_dir = '/tmp/case_';
+
+% set the prefix of the .yaml files
+yaml_file_prefix = 'deep_network_';
+
+% set the path to the atlas image
+path_to_atlas_image = ...
+    '/home/pma/rkwitt/deformation-prediction-code/data/images/3D_atlas/atlas.mhd';
+
+% set the prefix for the case-specific .mhd momenta files
+path_to_mhd_files = '/tmp/m_%d.mhd';
+
+%--------------------------------------------------------------------------
+% CONFIG::END
+%--------------------------------------------------------------------------
+
+fid = fopen('parsedconfig_3D.yaml', 'r');
 for i = 1:50
-    outputName = ['deep_network_', num2str(i), '.yaml'];
+    
+    % construct the filename of the .yaml files
+    outputName = fullfile(output_conf_dir, ...
+        ['deep_network_', num2str(i), '.yaml']);
+    
+    % open the new .yaml file
     fid2 = fopen(outputName, 'w');
-    tline = fgetl(fid)
+    
+    % create the case-specific directory for the output of the
+    % VectorMomentum LDDMM code
+    out_dir_prefix = sprintf('%s%d/', output_case_dir, i);
+    
+    tline = fgetl(fid);
     while ischar(tline)
+        
         disp(tline)
-        tline = strrep(tline, 'outputPrefixes', num2str(i));
-        tline = strrep(tline, 'm0.mhd', strcat('OAS3D_', num2str(i), '_deep_new_mscalar.mhd'));
+        tline = strrep(tline, ...
+            '/directory_to_atlas/atlas.mhd', ...
+            path_to_atlas_image);
+ 
+        tline = strrep(tline, ...
+            '/directory_to_m0/m0.mhd', ...
+            sprintf(path_to_mhd_files, i));
+        
+        tline = strrep(tline, ...
+            'output_prefix', ...
+            out_dir_prefix);
+        
         fprintf(fid2, '%s\n', tline);
         tline = fgetl(fid);
-        % %% read tmp.yaml file
+
     end
+    
     sta2 = fclose(fid2);
     type(outputName);
     frewind(fid)
+
 end
 sta = fclose(fid);

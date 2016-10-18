@@ -22,13 +22,13 @@ path_to_atlas_image = ...
     '/home/pma/rkwitt/deformation-prediction-code/data/images/atlas.mhd';
 
 % set the prefix for the case-specific .mhd momenta files
-path_to_mhd_files = '/tmp/m_%d';
+path_to_mhd_files = '/tmp/m_%d.mhd';
 
 %--------------------------------------------------------------------------
 % CONFIG::END
 %--------------------------------------------------------------------------
 
-fid = fopen('parsedconfig.yaml', 'r');
+fid = fopen('parsedconfig_2D.yaml', 'r');
 for i = 1:50
     
     % construct the filename of the .yaml files

@@ -8,7 +8,7 @@ integration:
     NIterForInverse: 5
     integMethod: RK4
 io:
-    outputPrefix: /directory_to_output_prefix/outputPrefixes/
+    outputPrefix: output_prefix
     gridEvery: 1
     plotSlice: None
     saveFrames: False
