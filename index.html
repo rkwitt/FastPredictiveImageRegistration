@@ -41,7 +41,7 @@ MICCAI DLMI workshop (2016)    </p>
 <h2>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
-<p>Our approach for momenta prediction is implemented in Torch. The actual mapping/warping of images (using the predicted momenta) is then realized using <a href="https://bitbucket.org/scicompanat/pyca">PyCA</a> and <a href="https://bitbucket.org/scicompanat/vectormomentum">VectorMomentum LDDMM</a>, both from the SCI Computational Anatomy repository on Bitbucket. Regarding the minimum system requirements, we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0). If the code runs on your system, please let us know your configuration and we are happy to add it to our list of supported platforms/configurations.</p>
+<p>Our approach for momenta prediction is implemented in Torch. The actual mapping/warping of images (using the predicted momenta) is realized using <a href="https://bitbucket.org/scicompanat/pyca">PyCA</a> and <a href="https://bitbucket.org/scicompanat/vectormomentum">VectorMomentum LDDMM</a>, both available from the SCI Computational Anatomy repository on Bitbucket. Regarding the minimum system requirements, we tested our code on Linux running Ubuntu 16.04 with 24GB of main memory and a NVIDIA Titan X (sponsored by NVIDIA, running CUDA 8.0). If the code runs on your system, please let us know your configuration and we are happy to create a list of supported platforms/configurations.</p>
 
 <ul>
 <li><a href="http://torch.ch/">Torch</a></li>
@@ -54,7 +54,7 @@ MICCAI DLMI workshop (2016)    </p>
 <h2>
 <a id="compilation" class="anchor" href="#compilation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compilation</h2>
 
-<p>Lets assume that all of our code will resides under <code>/code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest VectorMomentum LDDMM package (which we will use later on) and PyCA, we suggest to checkout a slightly older version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
+<p>Lets assume that all of our code will reside under <code>/code</code>. First, we are going to install PyCA. Due to compatibility issues between the latest VectorMomentum LDDMM package (which we will use later on) and PyCA, we suggest to checkout a slightly older version of PyCA. Note, that we also need the Insight Toolkit (ITK) to be installed.</p>
 
 <div class="highlight highlight-source-shell"><pre>apt-get install insighttoolkit4-python libinsighttoolkit4-dev <span class="pl-c"># install ITK v4</span>
 <span class="pl-c1">cd</span> /code
@@ -65,7 +65,7 @@ mkdir Build
 <span class="pl-c1">cd</span> Build
 ccmake .. <span class="pl-c"># configure PyCA via the cmake ncurses interface</span></pre></div>
 
-<p>On our system, we had to bump the <code>CUDA_ARCH_VERSION</code> to 20 for PyCA to compile. This can be done via the ccmake interface in the <em>Advanced Mode</em>. Also, the Python bindings did not compile with SWIG 3.0.3 (which was the version installed on our Ubuntu 16.04 system); we downgraded to swig-2.0.12 instead</p>
+<p>On our system, we had to bump the <code>CUDA_ARCH_VERSION</code> to 20 for PyCA to compile. This can be done via the ccmake interface in the <em>Advanced Mode</em>. Also, the Python bindings did not compile with SWIG 3.0.3 (which was the version installed on our Ubuntu 16.04 system); we downgraded to swig-2.0.12 instead, e.g., with</p>
 
 <div class="highlight highlight-source-shell"><pre>sudo apt-get install swig2.0
 <span class="pl-c"># Note that you might have to uninstall swig3.0 if errors persist</span></pre></div>
@@ -75,7 +75,7 @@ ccmake .. <span class="pl-c"># configure PyCA via the cmake ncurses interface</s
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/pyca/Build
 make -j4 <span class="pl-c"># -j4 will run 4 parallel jobs</span></pre></div>
 
-<p>should compile PyCA. Finally, we set the <code>PYTHONPATH</code> as follows (we do recommend to put the following export statement into the .bashrc file, assuming that you run bash):</p>
+<p>should compile PyCA. Finally, we set the <code>PYTHONPATH</code> as (we do recommend to put the following export statement into the .bashrc file, assuming that you are running a bash shell):</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">${PYTHONPATH}</span>:PATH_TO_PYCA/Build/python_module</pre></div>
 
@@ -88,7 +88,7 @@ git clone https://bitbucket.org/scicompanat/vectormomentum.git
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>To install our code for momenta prediction, just clone our GitHub repository as:</p>
+<p>To install our encoder-decoder code, just clone our GitHub repository with</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code
 git clone https://github.com/rkwitt/FastPredictiveImageRegistration.git</pre></div>
@@ -134,11 +134,11 @@ case, you can use <code>luarocks</code> to install it with</p>
 <h3>
 <a id="warping-images-based-on-predicted-momenta" class="anchor" href="#warping-images-based-on-predicted-momenta" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
 
-<p>We implement the warping step as follows: first, we will convert all momenta predictions to <code>.mhd</code> files; second, we will prepare the configuration files for VectorMomentum LDDMM and eventually run geodesic shooting using the predicted momenta. Lets first start MATLAB and change to the <code>utils</code> directory:</p>
+<p>We implement the warping step as follows: first, we will convert all momenta predictions to <code>.mhd</code> files; second, we will prepare the (YAML)  configuration files for VectorMomentum LDDMM and eventually run geodesic shooting using the predicted momenta. Lets first start MATLAB and change to the <code>utils</code> directory:</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils</pre></div>
 
-<p>Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and set the corresponding paths. Per default, the output directory will be <code>/tmp/</code> and the predicted momenta files will be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since we have N=50 test cases. Next, let us write the YAML configuration files for the VectorMomentum LDDMM code. This is done by editing <code>updateyaml_2D.m</code>. Running <code>updateyaml_2D</code> will then create N=50 configuration files in the output directory.</p>
+<p>Then, we edit the file <code>change_m0_to_mhd_2D.m</code> and set the corresponding paths. Per default, the output directory will be <code>/tmp/</code> and the predicted momenta files will be <code>/tmp/m_1.mhd</code> to <code>/tmp/m_50.mhd</code>, since we have N=50 test cases. Next, let us write the YAML configuration files for the VectorMomentum LDDMM code. This is done by editing <code>updateyaml_2D.m</code>. Running <code>updateyaml_2D</code> will then create N=50 configuration files in the output directory (<code>/tmp</code> in our case).</p>
 
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
 change_m0_to_mhd_2D
@@ -146,7 +146,7 @@ updateyaml_2D</pre></div>
 
 <p>We can now run the VectorMomentum LDDMM code (for our first test case of this example) as follows:</p>
 
-<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /external/vectormomentum/Code/Python/Applications/
+<div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/vectormomentum/Code/Python/Applications/
 python CAvmGeodesicShooting.py <span class="pl-k">~</span>/deformation-prediction-code/utils/deep_network_1.yaml</pre></div>
 
 <p>This will create the atlas image <em>warped</em> onto the source image in the directory <code>/tmp/case_1</code>. In case running the geodesic shooting code produces errors (related to plotting), just comment-out <code>GeodesicShootingPlots(g, ginv, I0, It, cf)</code> on line 151 of <code>CAvmGeodesicShooting.py</code>.</p>
@@ -163,7 +163,7 @@ brain database (including the atlas), i.e.,</p>
 <li>1 atlas image (in <code>data/images/3D_atlas/atlas.mhd</code>)</li>
 </ul>
 
-<p>These images have been (affinely) pre-aligned to the atlas by <strong>Nikhil Singh</strong>. We additionally 
+<p>These images have been (affinely) pre-aligned to the atlas (thanks to <em>Nikhil Singh</em>). We additionally 
 provide momenta (obtained by PyCA) for all training and testing images. This allows us to 
 train and test our encoder-decoder network. </p>
 
@@ -187,7 +187,7 @@ th main_nodiff_3D_patchprune.lua</pre></div>
 <h3>
 <a id="momenta-prediction-by-a-trained-model-1" class="anchor" href="#momenta-prediction-by-a-trained-model-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Momenta prediction by a trained model</h3>
 
-<p>Next, we will run the model in prediction mode to <em>map</em> our 50 input images to momenta that can be
+<p>Next, we will run the model in prediction mode to <em>map</em> our N=50 input images to momenta that can be
 later used by the VectorMomentum LDDMM code. This can simply be done by executing</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /code/FastPredictiveImageRegistration/
@@ -197,9 +197,12 @@ mv 3D_output.mat data/</pre></div>
 <p>which will create a MATLAB file <code>3D_output.mat</code> in the directory from which you executed the 
 <code>test_recon_nodiff_3D.lua</code> Torch code, i.e., in our case <code>/code/FastPredictiveImageRegistration/</code>.</p>
 
-<p>Once this step is finished, we need to convert the outputted momenta to MHD files. To do this,
-we edit <code>change_m0_to_mhd_3D.m</code> MATLAB file and adjust the variables within <code>CONFIG::START</code>
-and <code>CONFIG::END</code>. In our example, we set:</p>
+<h3>
+<a id="warping-images-based-on-predicted-momenta-1" class="anchor" href="#warping-images-based-on-predicted-momenta-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
+
+<p>Once the previous step is finished, we need to convert the outputted momenta (in the <code>output_3D.mat</code> file) 
+to <code>.mhd</code> files. To do this, we edit <code>change_m0_to_mhd_3D.m</code> MATLAB file (in the <code>utils</code> subdirectory) 
+and adjust the variables within <code>CONFIG::START</code> and <code>CONFIG::END</code> block. In our example, we set:</p>
 
 <div class="highlight highlight-source-matlab"><pre>momenta_mat_file = <span class="pl-s"><span class="pl-pds">'</span>../data/3D_output.mat<span class="pl-pds">'</span></span>;
 output_dir = <span class="pl-s"><span class="pl-pds">'</span>/tmp/<span class="pl-pds">'</span></span>;
@@ -210,7 +213,7 @@ output_prefix = <span class="pl-s"><span class="pl-pds">'</span>m<span class="pl
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
 change_m0_to_mhd_3D</pre></div>
 
-<p>which will create 50 output files in the <code>/tmp</code> folder, named <code>m_1.mhd</code>, <code>m_1.raw</code>, ..., <code>m_50.mhd</code>, <code>m_50.raw</code>.
+<p>which will create N=50 output files in the <code>/tmp</code> folder, named <code>m_1.mhd</code>, <code>m_1.raw</code>, ..., <code>m_50.mhd</code>, <code>m_50.raw</code>.
 Before we can run the VectorMomentum LDDMM code on these files, we need to create the required
 configuration files. As in the 2D example, we edit the <code>updateyaml_3D.m</code> MATLAB file and adjust the
 variables within the <code>CONFIG::START</code> and <code>CONFIG::END</code> block. Eventually, running</p>
@@ -218,13 +221,10 @@ variables within the <code>CONFIG::START</code> and <code>CONFIG::END</code> blo
 <div class="highlight highlight-source-matlab"><pre><span class="pl-k">cd</span> /code/FastPredictiveImageRegistration/utils
 updateyaml_3D</pre></div>
 
-<p>generates a collection of (N=50) <code>.yaml</code> files (in the <code>/tmp/</code> directory per default) that can be used
+<p>generates a collection of N=50 <code>.yaml</code> files (in the <code>/tmp</code> directory) that can be used
 to run the VectorMomentum LDDMM code.</p>
 
-<h3>
-<a id="warping-images-based-on-predicted-momenta-1" class="anchor" href="#warping-images-based-on-predicted-momenta-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Warping images based on predicted momenta</h3>
-
-<p>As in the 2D example, we run the VectorMomentum LDDMM code as:</p>
+<p>As in the 2D example, we run the VectorMomentum LDDMM code with</p>
 
 <div class="highlight highlight-source-shell"><pre><span class="pl-c1">cd</span> /external/vectormomentum/Code/Python/Applications/
 python CAvmGeodesicShooting.py /tmp/deep_network_1.yaml</pre></div>
